@@ -96,7 +96,7 @@
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
-        <p class="site-subtitle">随便写写</p>
+        <p class="site-subtitle">记录自己</p>
   </div>
 
   <div class="site-nav-right">
@@ -111,7 +111,7 @@
   <ul id="menu" class="menu">
         <li class="menu-item menu-item-home">
 
-    <a href="/database" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
 
   </li>
         
@@ -137,6 +137,11 @@
         <li class="menu-item menu-item-database">
 
     <a href="/database/" rel="section"><i class="fa fa-fw fa-database"></i>数据库</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
 
   </li>
         <li class="menu-item menu-item-about">
@@ -170,6 +175,97 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/11/cker%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Frank R">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frank R's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/03/11/cker%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">Docker安装与使用</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-11 11:43:00 / 修改时间：13:34:20" itemprop="dateCreated datePublished" datetime="2020-03-11T11:43:00+08:00">2020-03-11</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/docker/" itemprop="url" rel="index"><span itemprop="name">docker</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="一、升级内核"><a href="#一、升级内核" class="headerlink" title="一、升级内核"></a>一、升级内核</h3><p>Docker CE 支持 64 位版本 CentOS 7，并且要求内核版本不低于 3.10，如果是centos6，需要升级内核。但不建议这么做，本人亲测，就算升级以后，安装也需要处理大量依赖错误。<br>1、查看centos版本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># cat /etc/centos-release </span></span><br><span class="line">CentOS release 6.4 (Final)</span><br></pre></td></tr></table></figure>
+<p>2、查看内核</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># uname -r</span></span><br><span class="line">2.6.32-358.el6.x86_64</span><br></pre></td></tr></table></figure>
+<p>3、导入public key</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org</span></span><br></pre></td></tr></table></figure>
+<p>4、安装ELRepo到CentOS-6.x中</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># yum install yum-plugin-fastestmirror</span></span><br><span class="line">[root@localhost ~]<span class="comment"># yum install https://www.elrepo.org/elrepo-release-6-9.el6.elrepo.noarch.rpm</span></span><br></pre></td></tr></table></figure>
+<p>5、安装kernel-lt（lt=long-term）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># yum --enablerepo=elrepo-kernel install kernel-lt -y</span></span><br></pre></td></tr></table></figure>
+<p>6、编辑grub.conf文件，修改Grub引导顺序</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># vim /etc/grub.conf</span></span><br></pre></td></tr></table></figure>
+<p>把 default=1修改为 default=0,按esc 键，输入 ：wq保存退出。</p>
+<p>7、重启centos</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># reboot</span></span><br></pre></td></tr></table></figure>
+<p>8、重新查看内核</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># uname -r</span></span><br><span class="line">4.4.190-1.el6.elrepo.x86_64</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/03/11/cker%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/10/cker%E7%AE%80%E4%BB%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -193,9 +289,24 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-03-10 16:06:00 / 修改时间：17:30:36" itemprop="dateCreated datePublished" datetime="2020-03-10T16:06:00+08:00">2020-03-10</time>
+              <time title="创建时间：2020-03-10 16:06:00" itemprop="dateCreated datePublished" datetime="2020-03-10T16:06:00+08:00">2020-03-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-11 10:38:42" itemprop="dateModified" datetime="2020-03-11T10:38:42+08:00">2020-03-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/docker/" itemprop="url" rel="index"><span itemprop="name">docker</span></a>
+                </span>
             </span>
 
           
@@ -382,9 +493,15 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-count">3</span>
           <span class="site-state-item-name">日志</span>
         </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
       </div>
   </nav>
 </div>
